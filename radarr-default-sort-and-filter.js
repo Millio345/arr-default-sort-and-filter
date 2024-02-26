@@ -15,7 +15,7 @@
     /* This script allows you to define default sorting and filter for your interactive movie searches for Radarr
     INSTRUCTIONS:
     1) Change the @match line ABOVE to point to the homepage of your local radarr installation. Open the homepage, copy the link and add '*' to the end.
-    For example, if your radarr homepageis at 'https://myserver.com/radarr/' the line should be like this:
+    For example, if your radarr homepage is at 'https://myserver.com/radarr/' the line should be like this:
     // @match       https://myserver.com/radarr/*
     2) Edit the values below
     3) If the script does not work, open the developer options with F12 and look at the console to try to figure out what's going wrong
@@ -205,6 +205,6 @@
         movieLoaded()
       // When on another page, disable the mutation observer
       else
-        otherPageLoaded()
+        nonMoviePageLoaded()
     });
 })();
