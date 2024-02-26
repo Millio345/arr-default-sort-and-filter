@@ -7,6 +7,7 @@
 // @version     1.0
 // @author      Millio
 // @description Sets default sort and filter options for Radarr's interactive search
+// @author      MIT
 // ==/UserScript==
 
 
