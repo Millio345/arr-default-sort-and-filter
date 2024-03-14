@@ -130,7 +130,7 @@ CHANGELOG:
     }
 
     // Observe the body element so we know when modal is opened / closed
-    function bodyClassChanged(mutationsList, observer){
+    function bodyClassChanged(mutationsList, _observer){
         mutationsList.forEach(mutation => {
             if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
                 // Modal was closed; Set filterButtonClicked to false so we can reclick it next time the modal is opened
@@ -141,7 +141,7 @@ CHANGELOG:
         });
     }
     // This function is called by the mutationObserver when additional page content is added. Check if it contains the search table or the filter 'scroller'
-    function handleMutations(mutationsList, observer) {
+    function handleMutations(mutationsList, _observer) {
         for (let mutation of mutationsList) {
             if (mutation.type === 'childList') {
                 // Check if the added nodes include the target element
@@ -200,15 +200,17 @@ CHANGELOG:
     }
 
 
-    // When a movie page is loaded, start mutation observer and set filter clicked to false
+    // When a movie page is loaded, start mutation observers and set filter clicked to false
     function interactiveSearchPageLoaded(){
         filterButtonClicked = false
         observer.observe(document.documentElement, { childList: true, subtree: true });
+        body_observer.observe(document.querySelector('body'), { attributes: true, attributeFilter: ['class'], attributeOldValue: true });
     }
 
     // To prevent unintended consequences on other tables/buttons, stop observer when another page is loaded
     function nonInteractiveSearchPageLoaded(){
         observer.disconnect()
+        body_observer.disconnect()
     }
     function loadScript(arr_type)
     {
@@ -323,7 +325,7 @@ CHANGELOG:
     /* END FUNCTIONS */
     // Following code is ran on every single tab so should be kept as light as possible
     // Support all sites listed under Media Automation on https://wiki.servarr.com/
-    var supportedSites = ["Lidarr","Radarr","Readarr","Sonarr","Whisparr"];
+    let supportedSites = ["Lidarr","Radarr","Readarr","Sonarr","Whisparr"];
 
     // Check if we're on a supported site (site with metadata description 'Radarr'/'Sonarr'/...)
     let description = document.querySelector('meta[name="description"]');
@@ -337,7 +339,6 @@ CHANGELOG:
 
         // Observe the body element for changes to the class (= modal opened / closed)
         var body_observer = new MutationObserver(bodyClassChanged);
-        body_observer.observe(document.querySelector('body'), { attributes: true, attributeFilter: ['class'], attributeOldValue: true });
 
         // *arr sites uses ajax to change pages; We only want to click the filter button once per movie (otherwise the filter button is completely blocked from user interaction)
         var filterButtonClicked = false;
